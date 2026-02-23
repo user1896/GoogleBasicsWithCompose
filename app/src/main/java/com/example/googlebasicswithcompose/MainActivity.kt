@@ -3,15 +3,17 @@ package com.example.googlebasicswithcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.googlebasicswithcompose.ui.theme.GoogleBasicsWithComposeTheme
+
 
 class MainActivity : ComponentActivity() {
     //  onCreate() function is the entry point.
@@ -39,10 +41,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     //  @Composable function names are capitalized.
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+
+    // Surface is a component that you can think of as a paper, it provides
+    // a background, and can also handle "elevation" (shadows) and "shape"
+    // (rounded corners). Anything inside the curly braces { ... } will be
+    // drawn on top of it.
+    Surface(color = Color.Red) {
+    // Text is our second component, is it the basic "TextView" of Compose.
+        Text(
+            text = "Hello $name!",
+            modifier = modifier
+        )
+    }
     //  @Composable functions can't return anything.
 }
 
