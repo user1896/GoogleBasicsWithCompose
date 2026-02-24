@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.googlebasicswithcompose.ui.theme.GoogleBasicsWithComposeTheme
-
 
 class MainActivity : ComponentActivity() {
     //  onCreate() function is the entry point.
@@ -25,7 +25,13 @@ class MainActivity : ComponentActivity() {
     //  function or from other Composable functions.
     setContent {
             GoogleBasicsWithComposeTheme {
+                // The Scaffold container (a composable function) is used
+                // for the Overall page structure/skeleton.
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    // Google's official Jetpack Compose documentation
+                    // recommends Scaffold as the top-level container for
+                    // any "Screen" in the app.
+
                     Greeting(
                         name = "User",
                         modifier = Modifier.padding(innerPadding)
@@ -46,11 +52,25 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     // a background, and can also handle "elevation" (shadows) and "shape"
     // (rounded corners). Anything inside the curly braces { ... } will be
     // drawn on top of it.
-    Surface(color = Color.Red) {
-    // Text is our second component, is it the basic "TextView" of Compose.
+    Surface(
+        color = Color.Cyan,
+        modifier = modifier.padding(2.dp) // we apply the "incoming" modifier to the outermost component of the function
+        // The Scaffold (in MainActivity) calculates innerPadding
+        // (Without this, your text might get cut off by the phone's
+        // notch or the "Back/Home" gesture bar.).
+        // It passes that padding into Greeting via the modifier parameter.
+        // We then add 2.dp of extra padding on top of that.
+    ) {
+        // Text is our second component, is it the basic "TextView" of Compose.
         Text(
             text = "Hello $name!",
-            modifier = modifier
+            // a Modifier is essentially a list of decorations
+            // (padding, color, size) that we apply to UI elements.
+            modifier = Modifier.padding(24.dp)
+            // When you use the capital "M" Modifier, you are creating
+            // a brand new, empty list. It ignores any previous settings
+            // or constraints (that are in the parameter "modifier"),
+            // and applies only 24dp of padding.
         )
     }
     //  @Composable functions can't return anything.
