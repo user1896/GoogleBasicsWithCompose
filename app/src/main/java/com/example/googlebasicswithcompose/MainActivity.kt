@@ -78,11 +78,18 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 // a preview of a composable lets us see what the composable looks like
 // without having to build the entire app.
-// To enable a preview, annotate with @Composable and @Preview
-// We can't just use @Preview, we have to also use @Composable as well,
-// because this is a function of its own (we call it here GreetingPreview())
-// that we can compose from it other things.
-@Preview(showBackground = true)
+// To enable a preview, annotate with @Preview.
+// The composable function must provide default values for any parameters to preview it.
+// For this reason, it is recommended not to preview the Greeting() function directly.
+// Instead, we need to add another function, the BirthdayCardPreview() function in this case,
+// that calls the Greeting() function with an appropriate parameter.
+@Preview(
+    // We can pass multiple arguments to the annotation (annotation starts with @),
+    // as shown here:
+    name = "Text Preview",
+    showBackground = true,
+    showSystemUi = true
+)
 @Composable
 fun GreetingPreview() {
     GoogleBasicsWithComposeTheme {
