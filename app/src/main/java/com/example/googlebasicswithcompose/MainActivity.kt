@@ -3,6 +3,8 @@ package com.example.googlebasicswithcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -40,18 +42,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun GreetingText(message: String = "Hello", from: String = "Sender" ,modifier: Modifier = Modifier) {
-    Text(
-        text = "$message!",
-        modifier = modifier,
-        fontSize = 100.sp, // "sp" resizes based on the user's preferred text size under phone settings.
-        color = Color.Blue,
-        lineHeight = 116.sp,
-    )
-    Text(
-        text = from,
-        fontSize = 36.sp
-    )
+fun GreetingText(modifier: Modifier = Modifier, message: String = "Hello", from: String = "Sender") {
+    Column(modifier = modifier) { // instead of arranging our components as a Column, we could use Row or Box.
+        Text(
+            text = "$message!",
+            fontSize = 30.sp, // "sp" resizes based on the user's preferred text size under phone settings.
+            lineHeight = 116.sp,
+        )
+        Text(
+            text = from,
+            fontSize = 26.sp
+        )
+    }
 }
 
 @Preview(showBackground = true)
