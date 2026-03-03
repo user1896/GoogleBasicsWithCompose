@@ -66,14 +66,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun GreetingPreview() {
-        GoogleBasicsWithComposeTheme {
-            GreetingText(message = "Happy Android", from = "Developer")
-        }
-    }
-
     @Composable
     fun GreetingImage(modifier: Modifier = Modifier, message: String, from: String) {
         val image = painterResource(R.drawable.androidparty)
@@ -81,5 +73,16 @@ class MainActivity : ComponentActivity() {
             painter = image,
             contentDescription = null
         )
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun BirthdayCardPreview() {
+        GoogleBasicsWithComposeTheme {
+            GreetingImage(
+                message = "Happy Android!",
+                from = "- from Dev"
+            )
+        }
     }
 }
