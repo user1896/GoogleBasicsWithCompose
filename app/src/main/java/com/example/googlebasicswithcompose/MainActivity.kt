@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,7 +74,9 @@ class MainActivity : ComponentActivity() {
         Box(modifier) {
             Image(
                 painter = image,
-                contentDescription = null
+                contentDescription = null,
+                contentScale = ContentScale.Crop, // Make the width and height of the image equal to, or larger than, the corresponding dimension of the screen.
+                alpha = 0.6F // Make the image slightly transparent, to improve the app's contrast.
             )
             GreetingText(
                 message = message,
