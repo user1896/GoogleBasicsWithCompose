@@ -65,8 +65,7 @@ class MainActivity : ComponentActivity() {
                 fontSize = 26.sp,
                 modifier = Modifier
                     .padding(16.dp)
-                    .align(alignment = Alignment.End) // also can do: .align(Alignment.End)
-                    .background(color = Color.Blue)
+                    .align(alignment = Alignment.CenterHorizontally) // also can do: .align(Alignment.CenterHorizontally)
             )
         }
     }
