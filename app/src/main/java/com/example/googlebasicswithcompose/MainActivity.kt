@@ -35,40 +35,39 @@ class MainActivity : ComponentActivity() {
             GoogleBasicsWithComposeTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.Red
                 ) {
-                    ArticleCard()
+                    TaskCompletedScreen()
                 }
             }
         }
     }
 
     @Composable
-    fun ArticleCard(modifier: Modifier = Modifier) {
-        val imagePainter = painterResource(R.drawable.bg_compose_background)
-        val articleHeader = stringResource(R.string.article_header)
-        val shortDescription = stringResource(R.string.article_p1)
-        val longDescription = stringResource(R.string.article_p2)
+    fun TaskCompletedScreen(modifier: Modifier = Modifier) {
+        val imagePainter = painterResource(R.drawable.ic_task_completed)
+        val allTaskCompleted = stringResource(R.string.all_task_completed)
+        val niceWork = stringResource(R.string.nice_work)
 
-        Column(modifier) {
+        Column(
+            modifier
+                .fillMaxSize()
+                .background(Color.Blue),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Image(
                 painter = imagePainter,
                 contentDescription = null
             )
             Text(
-                text = articleHeader,
-                fontSize = 24.sp,
-                modifier = Modifier.padding(16.dp)
+                text = allTaskCompleted,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(top = 16.dp, bottom = 4.dp)
             )
             Text(
-                text = shortDescription,
-                textAlign = TextAlign.Justify,
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-            )
-            Text(
-                text = longDescription,
-                textAlign = TextAlign.Justify,
-                modifier = Modifier.padding(16.dp)
+                text = niceWork,
+                textAlign = TextAlign.Justify
             )
         }
     }
@@ -77,7 +76,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun BirthdayCardPreview() {
         GoogleBasicsWithComposeTheme {
-            ArticleCard()
+            TaskCompletedScreen()
         }
     }
 }
