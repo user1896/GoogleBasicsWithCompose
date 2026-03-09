@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import com.example.googlebasicswithcompose.ui.theme.GoogleBasicsWithComposeTheme
 
 class MainActivity : ComponentActivity() {
-    //  onCreate() function is the entry point.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // All functions marked with the @Composable annotation can be called from the setContent() function
@@ -38,54 +37,38 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GreetingImage(
-                        modifier = Modifier.padding(4.dp),
-                        message = stringResource(R.string.happy_birthday_text),
-                        from = stringResource(R.string.signature_text)
-                    )
+                    ArticleCard()
                 }
             }
         }
     }
 
     @Composable
-    fun GreetingText(modifier: Modifier = Modifier, message: String = "Hello", from: String = "Sender") {
-        Column( // instead of arranging our components as a Column, we also could use Row or Box.
-            modifier,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text = "$message!",
-                fontSize = 100.sp, // "sp" resizes based on the user's preferred text size under phone settings.
-                lineHeight = 116.sp,
-                textAlign = TextAlign.Center
-            )
-            Text(
-                text = from,
-                fontSize = 26.sp,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(alignment = Alignment.CenterHorizontally) // also can do: .align(Alignment.CenterHorizontally)
-            )
-        }
-    }
+    fun ArticleCard(modifier: Modifier = Modifier) {
+        val imagePainter = painterResource(R.drawable.bg_compose_background)
+        val articleHeader = stringResource(R.string.article_header)
+        val shortDescription = stringResource(R.string.article_p1)
+        val longDescription = stringResource(R.string.article_p2)
 
-    @Composable
-    fun GreetingImage(modifier: Modifier = Modifier, message: String, from: String) {
-        val image = painterResource(R.drawable.androidparty)
-        Box(modifier) {
+        Column(modifier) {
             Image(
-                painter = image,
-                contentDescription = null,
-                contentScale = ContentScale.Crop, // Make the width and height of the image equal to, or larger than, the corresponding dimension of the screen.
-                alpha = 0.6F // Make the image slightly transparent, to improve the app's contrast.
+                painter = imagePainter,
+                contentDescription = null
             )
-            GreetingText(
-                message = message,
-                from = from,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
+            Text(
+                text = articleHeader,
+                fontSize = 24.sp,
+                modifier = Modifier.padding(16.dp)
+            )
+            Text(
+                text = shortDescription,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+            )
+            Text(
+                text = longDescription,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(16.dp)
             )
         }
     }
@@ -94,10 +77,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun BirthdayCardPreview() {
         GoogleBasicsWithComposeTheme {
-            GreetingImage(
-                message = stringResource(R.string.happy_birthday_text),
-                from = stringResource(R.string.signature_text)
-            )
+            ArticleCard()
         }
     }
 }
