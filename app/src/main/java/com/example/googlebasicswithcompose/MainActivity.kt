@@ -37,36 +37,52 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color.Red
                 ) {
-                    TaskCompletedScreen()
+                    QuadrantsScreen()
                 }
             }
         }
     }
 
     @Composable
-    fun TaskCompletedScreen(modifier: Modifier = Modifier) {
-        val imagePainter = painterResource(R.drawable.ic_task_completed)
-        val allTaskCompleted = stringResource(R.string.all_task_completed)
-        val niceWork = stringResource(R.string.nice_work)
+    fun QuadrantsScreen(modifier: Modifier = Modifier) {
+        Column(modifier.fillMaxSize()) {
+            QuadrantsRow(modifier = Modifier.weight(1f), col1bgr = Color.Green, col2bgr = Color.Yellow)
+            QuadrantsRow(modifier = Modifier.weight(1f), col1bgr = Color.Blue, col2bgr = Color.Red)
+        }
+    }
 
+    @Composable
+    fun QuadrantsRow(
+        modifier: Modifier = Modifier,
+        col1bgr: Color = Color.Gray,
+        col2bgr: Color = Color.Gray
+    ) {
+        Row(modifier) {
+            Quadrant(modifier = Modifier.weight(1f), backgroundColor = col1bgr)
+            Quadrant(modifier = Modifier.weight(1f), backgroundColor = col2bgr)
+        }
+    }
+
+    @Composable
+    fun Quadrant(
+        modifier: Modifier = Modifier ,
+        header: String = "Header",
+        content: String = "Content",
+        backgroundColor: Color = Color.Gray
+    ) {
         Column(
             modifier
                 .fillMaxSize()
-                .background(Color.Blue),
+                .background(backgroundColor),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = imagePainter,
-                contentDescription = null
+            Text(
+                text = header,
+                textAlign = TextAlign.Justify
             )
             Text(
-                text = allTaskCompleted,
-                textAlign = TextAlign.Justify,
-                modifier = Modifier.padding(top = 16.dp, bottom = 4.dp)
-            )
-            Text(
-                text = niceWork,
+                text = content,
                 textAlign = TextAlign.Justify
             )
         }
@@ -76,7 +92,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun BirthdayCardPreview() {
         GoogleBasicsWithComposeTheme {
-            TaskCompletedScreen()
+            QuadrantsScreen()
         }
     }
 }
