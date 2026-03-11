@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,9 +46,20 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun QuadrantsScreen(modifier: Modifier = Modifier) {
-        Column(modifier.fillMaxSize()) {
-            QuadrantsRow(modifier = Modifier.weight(1f), col1bgr = Color.Green, col2bgr = Color.Yellow)
-            QuadrantsRow(modifier = Modifier.weight(1f), col1bgr = Color.Blue, col2bgr = Color.Red)
+        Column(
+            modifier
+                .fillMaxSize()
+        ) {
+            QuadrantsRow(
+                modifier = Modifier.weight(1f),
+                col1bgr = Color(0xFFEADDFF),
+                col2bgr = Color(0xFFD0BCFF)
+            )
+            QuadrantsRow(
+                modifier = Modifier.weight(1f),
+                col1bgr = Color(0xFFB69DF8),
+                col2bgr = Color(0xFFF6EDFF)
+            )
         }
     }
 
@@ -73,13 +85,16 @@ class MainActivity : ComponentActivity() {
         Column(
             modifier
                 .fillMaxSize()
-                .background(backgroundColor),
+                .background(backgroundColor)
+                .padding(16.dp), // it's not supposed to look like this
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = header,
-                textAlign = TextAlign.Justify
+                textAlign = TextAlign.Justify,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
             )
             Text(
                 text = content,
