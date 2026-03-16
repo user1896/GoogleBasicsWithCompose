@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,83 +32,25 @@ import com.example.googlebasicswithcompose.ui.theme.GoogleBasicsWithComposeTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // All functions marked with the @Composable annotation can be called from the setContent() function
         setContent {
             GoogleBasicsWithComposeTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Color.Red
-                ) {
-                    QuadrantsScreen()
-                }
+                DiceRollerApp()
             }
         }
     }
 
+    @Preview
     @Composable
-    fun QuadrantsScreen(modifier: Modifier = Modifier) {
-        Column(
-            modifier
-                .fillMaxSize()
-        ) {
-            QuadrantsRow(
-                modifier = Modifier.weight(1f),
-                col1bgr = Color(0xFFEADDFF),
-                col2bgr = Color(0xFFD0BCFF)
-            )
-            QuadrantsRow(
-                modifier = Modifier.weight(1f),
-                col1bgr = Color(0xFFB69DF8),
-                col2bgr = Color(0xFFF6EDFF)
-            )
-        }
+    fun DiceRollerApp() {
+        DiceWithButtonAndImage(
+            modifier = Modifier
+                .fillMaxSize() // tells the parent: "Give me all the space on the screen." (The component is now a full-screen invisible box).
+                .wrapContentSize(Alignment.Center) // tells the component: "Within this full-screen space I just claimed, let my actual content be its natural small size and place it exactly in the middle."
+        )
     }
 
     @Composable
-    fun QuadrantsRow(
-        modifier: Modifier = Modifier,
-        col1bgr: Color = Color.Gray,
-        col2bgr: Color = Color.Gray
-    ) {
-        Row(modifier) {
-            Quadrant(modifier = Modifier.weight(1f), backgroundColor = col1bgr)
-            Quadrant(modifier = Modifier.weight(1f), backgroundColor = col2bgr)
-        }
-    }
+    fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
 
-    @Composable
-    fun Quadrant(
-        modifier: Modifier = Modifier ,
-        header: String = "Header",
-        content: String = "Content",
-        backgroundColor: Color = Color.Gray
-    ) {
-        Column(
-            modifier
-                .fillMaxSize()
-                .background(backgroundColor)
-                .padding(16.dp), // it's not supposed to look like this
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = header,
-                textAlign = TextAlign.Justify,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-            Text(
-                text = content,
-                textAlign = TextAlign.Justify
-            )
-        }
-    }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun BirthdayCardPreview() {
-        GoogleBasicsWithComposeTheme {
-            QuadrantsScreen()
-        }
     }
 }
