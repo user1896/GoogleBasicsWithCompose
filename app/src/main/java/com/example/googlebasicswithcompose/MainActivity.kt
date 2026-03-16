@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,6 +52,13 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
-
+        Column (
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(onClick = { /*TODO*/ }) {
+                Text(stringResource(R.string.roll))
+            }
+        }
     }
 }
