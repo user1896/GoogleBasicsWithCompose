@@ -63,6 +63,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TipTimeLayout() {
+    //  declare "amountInput" as a state (here MutableState so we can change its value) so now it's observable
+    var amountInput by remember { mutableStateOf("") } // "mutableStateOf"  implements the interface "MutableState"
+
+    val amount = amountInput.toDoubleOrNull() ?: 0.0 // toDoubleOrNull() to convert the String "amountInput" to a Double. The ?: Elvis operator returns a "0.0" value when "amountInput" is null
+    val tip = calculateTip(amount)
+
     Column(
         modifier = Modifier
             .statusBarsPadding() // (status bar shows the time, battery, and notifications)
@@ -79,12 +85,14 @@ fun TipTimeLayout() {
                 .align(alignment = Alignment.Start)
         )
         EditNumberField(
+            value = amountInput,  // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
+            onValueChange = { amountInput = it },  // When the state of "amountInput" ( which is "value" inside TextField) changes a recomposition triggers, the "it" variable (the parameter of the callback) contains the new value.
             modifier = Modifier
                 .padding(bottom = 32.dp)
                 .fillMaxWidth()
         )
         Text(
-            text = stringResource(R.string.tip_amount, "$0.00"),
+            text = stringResource(R.string.tip_amount, tip),
             style = MaterialTheme.typography.displaySmall
         )
         Spacer(modifier = Modifier.height(150.dp))
@@ -92,16 +100,14 @@ fun TipTimeLayout() {
 }
 
 @Composable
-fun EditNumberField(modifier: Modifier = Modifier) {
-    //  declare "amountInput" as a state (here MutableState so we can change its value) so now it's observable
-    var amountInput by remember { mutableStateOf("") } // "mutableStateOf"  implements the interface "MutableState"
-
-    val amount = amountInput.toDoubleOrNull() ?: 0.0 // toDoubleOrNull() to convert the String "amountInput" to a Double. The ?: Elvis operator returns a "0.0" value when "amountInput" is null
-    val tip = calculateTip(amount)
-
+fun EditNumberField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     TextField(
-        value = amountInput, // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
-        onValueChange = { amountInput = it }, // When the state of "amountInput" ( which is "value" inside TextField) changes a recomposition triggers, the "it" variable (the parameter of the callback) contains the new value.
+        value = value,
+        onValueChange = onValueChange,
         singleLine = true,
         label = { Text(stringResource(R.string.bill_amount)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
