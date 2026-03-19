@@ -66,9 +66,12 @@ class MainActivity : ComponentActivity() {
 fun TipTimeLayout() {
     //  declare "amountInput" as a state (here MutableState so we can change its value) so now it's observable
     var amountInput by remember { mutableStateOf("") } // "mutableStateOf"  implements the interface "MutableState"
-
     val amount = amountInput.toDoubleOrNull() ?: 0.0 // toDoubleOrNull() to convert the String "amountInput" to a Double. The ?: Elvis operator returns a "0.0" value when "amountInput" is null
-    val tip = calculateTip(amount)
+
+    var tipInput by remember { mutableStateOf("") }
+    val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
+
+    val tip = calculateTip(amount, tipPercent)
 
     Column(
         modifier = Modifier
@@ -88,7 +91,15 @@ fun TipTimeLayout() {
         EditNumberField(
             label = R.string.bill_amount,
             value = amountInput,  // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
-            onValueChange = { amountInput = it },  // When the state of "amountInput" ( which is "value" inside TextField) changes a recomposition triggers, the "it" variable (the parameter of the callback) contains the new value.
+            onValueChanged = { amountInput = it },  // When the state of "amountInput" ( which is "value" inside TextField) changes a recomposition triggers, the "it" variable (the parameter of the callback) contains the new value.
+            modifier = Modifier
+                .padding(bottom = 32.dp)
+                .fillMaxWidth()
+        )
+        EditNumberField(
+            label = R.string.how_was_the_service,
+            value = tipInput,
+            onValueChanged = { tipInput = it },
             modifier = Modifier
                 .padding(bottom = 32.dp)
                 .fillMaxWidth()
@@ -105,12 +116,12 @@ fun TipTimeLayout() {
 fun EditNumberField(
     @StringRes label: Int, // @StringRes denotes to the compiler that the "label" parameter is expected to be a string resource
     value: String,
-    onValueChange: (String) -> Unit,
+    onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     TextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = onValueChanged,
         singleLine = true,
         label = { Text(stringResource(label)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
