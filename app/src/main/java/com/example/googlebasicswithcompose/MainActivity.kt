@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -35,54 +37,61 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.googlebasicswithcompose.ui.theme.GoogleBasicsWithComposeTheme
+import java.text.NumberFormat
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GoogleBasicsWithComposeTheme {
-                DiceRollerApp()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    TipTimeLayout()
+                }
             }
         }
     }
+}
 
-    @Preview
-    @Composable
-    fun DiceRollerApp() {
-        DiceWithButtonAndImage(
+@Composable
+fun TipTimeLayout() {
+    Column(
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(horizontal = 40.dp)
+            .safeDrawingPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = stringResource(R.string.calculate_tip),
             modifier = Modifier
-                .fillMaxSize() // tells the parent: "Give me all the space on the screen." (The component is now a full-screen invisible box).
-                .wrapContentSize(Alignment.Center) // tells the component: "Within this full-screen space I just claimed, let my actual content be its natural small size and place it exactly in the middle."
+                .padding(bottom = 16.dp, top = 40.dp)
+                .align(alignment = Alignment.Start)
         )
+        Text(
+            text = stringResource(R.string.tip_amount, "$0.00"),
+            style = MaterialTheme.typography.displaySmall
+        )
+        Spacer(modifier = Modifier.height(150.dp))
     }
+}
 
-    @Composable
-    fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
-        var result by remember { mutableStateOf(1) }
+/**
+ * Calculates the tip based on the user input and format the tip amount
+ * according to the local currency.
+ * Example would be "$10.00".
+ */
+private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
+    val tip = tipPercent / 100 * amount
+    return NumberFormat.getCurrencyInstance().format(tip)
+}
 
-        val imageResource = when (result) {
-            1 -> R.drawable.dice_1
-            2 -> R.drawable.dice_2
-            3 -> R.drawable.dice_3
-            4 -> R.drawable.dice_4
-            5 -> R.drawable.dice_5
-            else -> R.drawable.dice_6
-        }
-
-        Column (
-            modifier = modifier,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(imageResource),
-                contentDescription = result.toString() //  reflect the value of result by converting it as a string and passing it as the contentDescription.
-            )
-
-            Spacer(modifier = Modifier.height(16.dp)) // adds space between the image and the button
-
-            Button(onClick = { result = (1..6).random() }) {
-                Text(stringResource(R.string.roll))
-            }
-        }
+@Preview(showBackground = true)
+@Composable
+fun TipTimeLayoutPreview() {
+    GoogleBasicsWithComposeTheme {
+        TipTimeLayout()
     }
 }
