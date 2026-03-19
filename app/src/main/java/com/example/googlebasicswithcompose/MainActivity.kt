@@ -3,6 +3,7 @@ package com.example.googlebasicswithcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -85,6 +86,7 @@ fun TipTimeLayout() {
                 .align(alignment = Alignment.Start)
         )
         EditNumberField(
+            label = R.string.bill_amount,
             value = amountInput,  // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
             onValueChange = { amountInput = it },  // When the state of "amountInput" ( which is "value" inside TextField) changes a recomposition triggers, the "it" variable (the parameter of the callback) contains the new value.
             modifier = Modifier
@@ -101,6 +103,7 @@ fun TipTimeLayout() {
 
 @Composable
 fun EditNumberField(
+    @StringRes label: Int, // @StringRes denotes to the compiler that the "label" parameter is expected to be a string resource
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -109,7 +112,7 @@ fun EditNumberField(
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
-        label = { Text(stringResource(R.string.bill_amount)) },
+        label = { Text(stringResource(label)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = modifier,
         )
