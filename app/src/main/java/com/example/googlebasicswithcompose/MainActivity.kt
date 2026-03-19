@@ -25,6 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -96,13 +97,15 @@ private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
 
 @Composable
 fun EditNumberField(modifier: Modifier = Modifier) {
+    //  declare "amountInput" as a state (here MutableState so we can change its value) so now it's observable
+    var amountInput by remember { mutableStateOf("") } // "mutableStateOf"  implements the interface "MutableState"
+
     TextField(
-        value = "",
-        onValueChange = {},
+        value = amountInput, // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
+        onValueChange = { amountInput = it }, // When the state of "amountInput" ( which is "value" inside TextField) changes a recomposition triggers, the "it" variable (the parameter of the callback) contains the new value.
         modifier = modifier
     )
 }
-
 
 @Preview(showBackground = true)
 @Composable
