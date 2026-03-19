@@ -39,6 +39,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -90,6 +91,10 @@ fun TipTimeLayout() {
         )
         EditNumberField(
             label = R.string.bill_amount,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next // The keyboard will move to the next field when the user presses the "Next" button.
+            ),
             value = amountInput,  // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
             onValueChanged = { amountInput = it },  // When the state of "amountInput" ( which is "value" inside TextField) changes a recomposition triggers, the "it" variable (the parameter of the callback) contains the new value.
             modifier = Modifier
@@ -98,6 +103,10 @@ fun TipTimeLayout() {
         )
         EditNumberField(
             label = R.string.how_was_the_service,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done // indicates that the user finished providing input.
+            ),
             value = tipInput,
             onValueChanged = { tipInput = it },
             modifier = Modifier
@@ -115,6 +124,7 @@ fun TipTimeLayout() {
 @Composable
 fun EditNumberField(
     @StringRes label: Int, // @StringRes denotes to the compiler that the "label" parameter is expected to be a string resource
+    keyboardOptions: KeyboardOptions,
     value: String,
     onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -124,7 +134,7 @@ fun EditNumberField(
         onValueChange = onValueChanged,
         singleLine = true,
         label = { Text(stringResource(label)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = keyboardOptions,
         modifier = modifier,
         )
 }
