@@ -78,7 +78,11 @@ fun TipTimeLayout() {
                 .padding(bottom = 16.dp, top = 40.dp)
                 .align(alignment = Alignment.Start)
         )
-        EditNumberField(modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth())
+        EditNumberField(
+            modifier = Modifier
+                .padding(bottom = 32.dp)
+                .fillMaxWidth()
+        )
         Text(
             text = stringResource(R.string.tip_amount, "$0.00"),
             style = MaterialTheme.typography.displaySmall
@@ -87,20 +91,13 @@ fun TipTimeLayout() {
     }
 }
 
-/**
- * Calculates the tip based on the user input and format the tip amount
- * according to the local currency.
- * Example would be "$10.00".
- */
-private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
-    val tip = tipPercent / 100 * amount
-    return NumberFormat.getCurrencyInstance().format(tip)
-}
-
 @Composable
 fun EditNumberField(modifier: Modifier = Modifier) {
     //  declare "amountInput" as a state (here MutableState so we can change its value) so now it's observable
     var amountInput by remember { mutableStateOf("") } // "mutableStateOf"  implements the interface "MutableState"
+
+    val amount = amountInput.toDoubleOrNull() ?: 0.0 // toDoubleOrNull() to convert the String "amountInput" to a Double. The ?: Elvis operator returns a "0.0" value when "amountInput" is null
+    val tip = calculateTip(amount)
 
     TextField(
         value = amountInput, // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
@@ -110,6 +107,16 @@ fun EditNumberField(modifier: Modifier = Modifier) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = modifier,
         )
+}
+
+/**
+ * Calculates the tip based on the user input and format the tip amount
+ * according to the local currency.
+ * Example would be "$10.00".
+ */
+private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
+    val tip = tipPercent / 100 * amount
+    return NumberFormat.getCurrencyInstance().format(tip) // NumberFormat to display the format of "tip" as currency.
 }
 
 @Preview(showBackground = true)
