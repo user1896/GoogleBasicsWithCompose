@@ -64,6 +64,7 @@ fun TipTimeLayout() {
         modifier = Modifier
             .statusBarsPadding() // (status bar shows the time, battery, and notifications)
             .padding(horizontal = 40.dp)
+            .verticalScroll(rememberScrollState()) // verticalScroll makes a Composable scrollable when its content is too tall to fit on the screen. rememberScrollState() "remembers" the current scroll position to ensures that if the screen rotates or the user leaves and comes back, the scroll position isn't lost.
             .safeDrawingPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
