@@ -79,6 +79,23 @@ fun LemonadeAppLayout() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        LemonadeStage()
+    }
+}
+
+@Composable
+fun LemonadeStage() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            painter = painterResource(R.drawable.lemon_tree),
+            contentDescription = stringResource(R.string.lemon_tree)
+        )
+        Text(
+            text = stringResource(R.string.lemon_tree_description),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
