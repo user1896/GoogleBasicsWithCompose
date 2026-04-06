@@ -104,7 +104,8 @@ fun TipTimeLayout() {
                 imeAction = ImeAction.Next // The keyboard will move to the next field when the user presses the "Next" button.
             ),
             value = amountInput,  // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
-            onValueChanged = { amountInput = it },  // When the state of "amountInput" ( which is "value" inside TextField) changes a recomposition triggers, the "it" variable (the parameter of the callback) contains the new value.
+            // TextField has the callback onValueChange, which is called when the "value" of TextField changes, here we want to trigger a rerender, so we change our state (amountInput) with the new value of "value" in TextField, which is "it" in the callback
+            onValueChanged = { amountInput = it },  // we'll put this function as the callback of TextField, that is responsible of what happens when the value of TextField changes.
             modifier = Modifier
                 .padding(bottom = 32.dp)
                 .fillMaxWidth()
