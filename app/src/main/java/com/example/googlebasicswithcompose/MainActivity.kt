@@ -72,6 +72,7 @@ class MainActivity : ComponentActivity() {
 fun LemonadeAppLayout() {
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .statusBarsPadding() // (status bar shows the time, battery, and notifications)
             .padding(horizontal = 40.dp)
             .verticalScroll(rememberScrollState()) // verticalScroll makes a Composable scrollable when its content is too tall to fit on the screen. rememberScrollState() "remembers" the current scroll position to ensures that if the screen rotates or the user leaves and comes back, the scroll position isn't lost.
@@ -81,7 +82,8 @@ fun LemonadeAppLayout() {
     ) {
         LemonadeStage(
             imageSrc = R.drawable.lemon_tree,
-            imageDescription = R.string.lemon_tree_description
+            imageDescription = R.string.lemon_tree,
+            textValue = R.string.lemon_tree_description
         )
     }
 }
@@ -89,7 +91,8 @@ fun LemonadeAppLayout() {
 @Composable
 fun LemonadeStage(
     @DrawableRes imageSrc: Int,
-    @StringRes imageDescription: Int
+    @StringRes imageDescription: Int,
+    @StringRes textValue: Int
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -99,7 +102,7 @@ fun LemonadeStage(
             contentDescription = stringResource(imageDescription)
         )
         Text(
-            text = stringResource(R.string.lemon_tree_description),
+            text = stringResource(textValue),
             textAlign = TextAlign.Center
         )
     }
