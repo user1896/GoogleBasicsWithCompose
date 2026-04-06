@@ -7,6 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -70,6 +72,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LemonadeAppLayout() {
+    var stageState by remember { mutableIntStateOf(1) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,10 +84,16 @@ fun LemonadeAppLayout() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text( // just to test and see the value of the state
+            text = stageState.toString()
+        )
         LemonadeStage(
             imageSrc = R.drawable.lemon_tree,
             imageDescription = R.string.lemon_tree,
-            textValue = R.string.lemon_tree_description
+            textValue = R.string.lemon_tree_description,
+            onImageClick = {
+                stageState++
+            }
         )
     }
 }
@@ -92,14 +102,20 @@ fun LemonadeAppLayout() {
 fun LemonadeStage(
     @DrawableRes imageSrc: Int,
     @StringRes imageDescription: Int,
-    @StringRes textValue: Int
+    @StringRes textValue: Int,
+    onImageClick: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(imageSrc),
-            contentDescription = stringResource(imageDescription)
+            contentDescription = stringResource(imageDescription),
+            modifier = Modifier
+                .wrapContentSize()
+                .clickable(
+                    onClick = onImageClick
+                )
         )
         Text(
             text = stringResource(textValue),
