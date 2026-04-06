@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    TipTimeLayout()
+                    LemonadeAppLayout()
                 }
             }
         }
@@ -69,18 +69,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TipTimeLayout() {
-    //  declare "amountInput" as a state (here MutableState so we can change its value) so now it's observable
-    var amountInput by remember { mutableStateOf("") } // "mutableStateOf"  implements the interface "MutableState"
-    val amount = amountInput.toDoubleOrNull() ?: 0.0 // toDoubleOrNull() to convert the String "amountInput" to a Double. The ?: Elvis operator returns a "0.0" value when "amountInput" is null
-
-    var tipInput by remember { mutableStateOf("") }
-    val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
-
-    var roundUp by remember { mutableStateOf(false) }
-
-    val tip = calculateTip(amount, tipPercent, roundUp)
-
+fun LemonadeAppLayout() {
     Column(
         modifier = Modifier
             .statusBarsPadding() // (status bar shows the time, battery, and notifications)
@@ -90,116 +79,13 @@ fun TipTimeLayout() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = stringResource(R.string.calculate_tip),
-            modifier = Modifier
-                .padding(bottom = 16.dp, top = 40.dp)
-                .align(alignment = Alignment.Start)
-        )
-        EditNumberField(
-            label = R.string.bill_amount,
-            leadingIcon = R.drawable.money,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next // The keyboard will move to the next field when the user presses the "Next" button.
-            ),
-            value = amountInput,  // pass our state as a parameter to TextField, now "value" inside TextField represents the state of "amountInput"
-            // TextField has the callback onValueChange, which is called when the "value" of TextField changes, here we want to trigger a rerender, so we change our state (amountInput) with the new value of "value" in TextField, which is "it" in the callback
-            onValueChanged = { amountInput = it },  // we'll put this function as the callback of TextField, that is responsible of what happens when the value of TextField changes.
-            modifier = Modifier
-                .padding(bottom = 32.dp)
-                .fillMaxWidth()
-        )
-        EditNumberField(
-            label = R.string.how_was_the_service,
-            leadingIcon = R.drawable.percent,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done // indicates that the user finished providing input.
-            ),
-            value = tipInput,
-            onValueChanged = { tipInput = it },
-            modifier = Modifier
-                .padding(bottom = 32.dp)
-                .fillMaxWidth()
-        )
-        RoundTheTipRow(
-            roundUp = roundUp,
-            onRoundUpChanged = { roundUp = it },
-            modifier = Modifier.padding(bottom = 32.dp)
-        )
-        Text(
-            text = stringResource(R.string.tip_amount, tip),
-            style = MaterialTheme.typography.displaySmall
-        )
-        Spacer(modifier = Modifier.height(150.dp))
     }
-}
-
-@Composable
-fun EditNumberField(
-    @StringRes label: Int, // @StringRes denotes to the compiler that the "label" parameter is expected to be a string resource
-    @DrawableRes leadingIcon: Int,
-    keyboardOptions: KeyboardOptions,
-    value: String,
-    onValueChanged: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TextField(
-        value = value,
-        leadingIcon = { Icon(painter = painterResource(id = leadingIcon), null) },
-        onValueChange = onValueChanged,
-        singleLine = true,
-        label = { Text(stringResource(label)) },
-        keyboardOptions = keyboardOptions,
-        modifier = modifier,
-        )
-}
-
-@Composable
-fun RoundTheTipRow(
-    roundUp: Boolean,
-    onRoundUpChanged: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .size(48.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = stringResource(R.string.round_up_tip))
-        Switch(
-            checked = roundUp,
-            onCheckedChange = onRoundUpChanged,
-            modifier = modifier
-                .fillMaxWidth()
-                .wrapContentWidth(Alignment.End), // align the switch to the end of the row
-        )
-    }
-}
-
-/**
- * Calculates the tip based on the user input and format the tip amount
- * according to the local currency.
- * Example would be "$10.00".
- */
-private fun calculateTip(
-    amount: Double,
-    tipPercent: Double = 15.0,
-    roundUp: Boolean
-): String {
-    var tip = tipPercent / 100 * amount
-    if (roundUp) {
-        tip = kotlin.math.ceil(tip)
-    }
-    return NumberFormat.getCurrencyInstance().format(tip) // NumberFormat to display the format of "tip" as currency.
 }
 
 @Preview(showBackground = true)
 @Composable
 fun TipTimeLayoutPreview() {
     GoogleBasicsWithComposeTheme {
-        TipTimeLayout()
+        LemonadeAppLayout()
     }
 }
