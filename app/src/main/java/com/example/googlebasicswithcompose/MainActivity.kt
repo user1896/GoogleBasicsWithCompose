@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -41,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -109,9 +111,6 @@ fun LemonadeAppLayout() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text( // just to test and see the value of the state
-            text = stageState.toString()
-        )
         LemonadeStage(
             imageSrc = currentImageSrc,
             imageDescription = currentImageDescription,
@@ -132,6 +131,10 @@ fun LemonadeStage(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .clip(RoundedCornerShape(32.dp)) // 1. Clip to a rounded shape
+            .background(Color(0xFFC3ECD2)) // In Compose, the order is critical: first you define the "shape" of the container (clipping), then you fill that shape with color
+            .padding(16.dp)
     ) {
         Image(
             painter = painterResource(imageSrc),
@@ -141,10 +144,13 @@ fun LemonadeStage(
                 .clickable(
                     onClick = onImageClick
                 )
+                .padding(bottom = 16.dp)
         )
         Text(
             text = stringResource(textValue),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            color = Color.Black
         )
     }
 }
