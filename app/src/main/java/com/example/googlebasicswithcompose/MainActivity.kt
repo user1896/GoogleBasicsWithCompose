@@ -74,6 +74,31 @@ class MainActivity : ComponentActivity() {
 fun LemonadeAppLayout() {
     var stageState by remember { mutableIntStateOf(1) }
 
+    var currentImageSrc = R.drawable.lemon_tree
+    var currentImageDescription = R.string.lemon_tree
+    var currentTextValue = R.string.lemon_tree_description
+
+    when (stageState) {
+        2 -> {
+            currentImageSrc = R.drawable.lemon_squeeze
+            currentImageDescription = R.string.lemon
+            currentTextValue = R.string.lemon_squeeze_description
+        }
+        3 -> {
+            currentImageSrc = R.drawable.lemon_drink
+            currentImageDescription = R.string.glass_of_lemonade
+            currentTextValue = R.string.lemon_drink_description
+        }
+        4 -> {
+            currentImageSrc = R.drawable.lemon_restart
+            currentImageDescription = R.string.empty_glass
+            currentTextValue = R.string.lemon_restart_description
+        }
+        else -> {
+            stageState = 1
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -88,9 +113,9 @@ fun LemonadeAppLayout() {
             text = stageState.toString()
         )
         LemonadeStage(
-            imageSrc = R.drawable.lemon_tree,
-            imageDescription = R.string.lemon_tree,
-            textValue = R.string.lemon_tree_description,
+            imageSrc = currentImageSrc,
+            imageDescription = currentImageDescription,
+            textValue = currentTextValue,
             onImageClick = {
                 stageState++
             }
