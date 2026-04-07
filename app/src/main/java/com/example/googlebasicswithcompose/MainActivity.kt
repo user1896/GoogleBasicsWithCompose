@@ -27,12 +27,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -72,6 +76,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// Compose Material 3 considers certain layout components "Experimental" like Scafold,
+// we "opt-in" to the API by adding: @OptIn(ExperimentalMaterial3Api::class)
+// This tells Android Studio you know it’s experimental, and you're okay with it.
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LemonadeAppLayout() {
     var stageState by remember { mutableIntStateOf(1) }
@@ -101,24 +109,55 @@ fun LemonadeAppLayout() {
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding() // (status bar shows the time, battery, and notifications)
-            .padding(horizontal = 40.dp)
-            .verticalScroll(rememberScrollState()) // verticalScroll makes a Composable scrollable when its content is too tall to fit on the screen. rememberScrollState() "remembers" the current scroll position to ensures that if the screen rotates or the user leaves and comes back, the scroll position isn't lost.
-            .safeDrawingPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        LemonadeStage(
-            imageSrc = currentImageSrc,
-            imageDescription = currentImageDescription,
-            textValue = currentTextValue,
-            onImageClick = {
-                stageState++
-            }
+    // Scaffold manages the "slots" for your UI. It gives you slots like topBar, bottomBar,
+    // floatingActionButton, and passes innerPadding so your content does not draw under those
+    // bars. Without it, you have to guess or manually calculate those offsets.
+
+    // Use Scaffold when your screen needs Material structure like a top bar, bottom bar, FAB,
+    // snackbars, or proper handling of system insets
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = "Lemonade",
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    containerColor = Color(0xFFC3ECD2)
+                )
+            )
+        }
+    ) { innerPadding -> // the innerPadding tells you how much space is already being used by things like the top bar or bottom bar, and you apply that padding to your main content so it doesn’t overlap them.
+        // Surface is optional and mainly useful for applying Material background/color/shadow
+        // and making a container follow the Material look.
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            color = MaterialTheme.colorScheme.background
         )
+        {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 40.dp)
+                    .verticalScroll(rememberScrollState()) // verticalScroll makes a Composable scrollable when its content is too tall to fit on the screen. rememberScrollState() "remembers" the current scroll position to ensures that if the screen rotates or the user leaves and comes back, the scroll position isn't lost.
+                    .safeDrawingPadding(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                LemonadeStage(
+                    imageSrc = currentImageSrc,
+                    imageDescription = currentImageDescription,
+                    textValue = currentTextValue,
+                    onImageClick = {
+                        stageState++
+                    }
+                )
+            }
+        }
     }
 }
 
