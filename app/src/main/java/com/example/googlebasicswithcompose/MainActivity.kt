@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,6 +60,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.googlebasicswithcompose.model.Affirmation
 import com.example.googlebasicswithcompose.ui.theme.GoogleBasicsWithComposeTheme
 import java.text.NumberFormat
 
@@ -81,10 +84,40 @@ class MainActivity : ComponentActivity() {
 fun AffirmationsApp() {
 }
 
-@Preview(showBackground = true)
 @Composable
-fun AffirmationsAppPreview() {
-    GoogleBasicsWithComposeTheme {
-        AffirmationsApp()
+fun AffirmationCard(affirmation: Affirmation, modifier: Modifier = Modifier) {
+    Card(modifier = modifier) {
+        Column() {
+            Image(
+                painter = painterResource(affirmation.imageResourceId),
+                contentDescription = stringResource(affirmation.stringResourceId),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(194.dp),
+                contentScale = ContentScale.Crop // It scales the image up or down until the entire container (fillMaxWidth and height(194.dp)) is completely covered while maintaining the Aspect Ratio, and any part of the image that "hangs over" the edges is chopped off (cropped).
+            )
+            Text(
+                text = stringResource(affirmation.stringResourceId),
+//                text = LocalContext.current.getString(affirmation.stringResourceId), // you can also get the stringResource like this.
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.headlineSmall
+            )
+        }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun AffirmationCardPreview() {
+    GoogleBasicsWithComposeTheme {
+        AffirmationCard(Affirmation(R.string.affirmation1, R.drawable.image1))
+    }
+}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun AffirmationsAppPreview() {
+//    GoogleBasicsWithComposeTheme {
+//        AffirmationsApp()
+//    }
+//}

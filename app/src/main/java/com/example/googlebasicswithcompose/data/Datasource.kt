@@ -18,6 +18,7 @@ class Datasource() {
             Affirmation(R.string.affirmation7, R.drawable.image7),
             Affirmation(R.string.affirmation8, R.drawable.image8),
             Affirmation(R.string.affirmation9, R.drawable.image9),
-            Affirmation(R.string.affirmation10, R.drawable.image10))
+            Affirmation(R.string.affirmation10, R.drawable.image10)
+        )
     }
 }
