@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -60,6 +62,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.googlebasicswithcompose.data.Datasource
 import com.example.googlebasicswithcompose.model.Affirmation
 import com.example.googlebasicswithcompose.ui.theme.GoogleBasicsWithComposeTheme
 import java.text.NumberFormat
@@ -82,6 +85,30 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AffirmationsApp() {
+    val affirmationData = Datasource().loadAffirmations()
+    AffirmationList(affirmationList = affirmationData)
+}
+
+@Composable
+fun AffirmationList(affirmationList: List<Affirmation>, modifier: Modifier = Modifier) {
+    LazyColumn(modifier = modifier) { // A Column is like a standard webpage: it loads everything
+        // at once. A LazyColumn is like an Instagram or Facebook feed: it only loads what you
+        // are currently looking at. Also, Column Does not scroll by default while LazyColumn Scrolling is built-in
+
+        // The items() method is how you add items to the LazyColumn. This method is unique to this composable.
+        items(affirmationList) { affirmation ->
+            // inside we specify what we should do with each item, just like a forEach loop
+            AffirmationCard(
+                affirmation,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+
+//        we used the items() method instead of forEach because we're inside LazyColumn.
+//        affirmationList.forEach { affirmation ->
+//            AffirmationCard(affirmation)
+//        }
+    }
 }
 
 @Composable
