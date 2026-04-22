@@ -13,10 +13,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -53,6 +58,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -85,8 +91,22 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AffirmationsApp() {
-    val affirmationData = Datasource().loadAffirmations()
-    AffirmationList(affirmationList = affirmationData)
+    val layoutDirection = LocalLayoutDirection.current // It tells your code whether the user's phone is set to a Left-to-Right (LTR) language (like English) or a Right-to-Left (RTL) language (like Arabic or Hebrew)
+
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding() // Content now starts safely BELOW the clock/battery
+            .padding(
+                start = WindowInsets.safeDrawing.asPaddingValues()
+                    .calculateStartPadding(layoutDirection), // Instead of just saying padding(left = 16.dp), this asks: "Based on the system bars AND whether the user's language is Left-to-Right or Right-to-Left, how much padding do I need at the start?"
+                end = WindowInsets.safeDrawing.asPaddingValues()
+                    .calculateEndPadding(layoutDirection)
+            ),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        AffirmationList(affirmationList = Datasource().loadAffirmations())
+    }
 }
 
 @Composable
@@ -140,11 +160,3 @@ fun AffirmationCardPreview() {
         AffirmationCard(Affirmation(R.string.affirmation1, R.drawable.image1))
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun AffirmationsAppPreview() {
-//    GoogleBasicsWithComposeTheme {
-//        AffirmationsApp()
-//    }
-//}
