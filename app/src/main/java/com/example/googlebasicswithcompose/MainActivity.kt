@@ -70,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.googlebasicswithcompose.data.Datasource
 import com.example.googlebasicswithcompose.model.Affirmation
+import com.example.googlebasicswithcompose.model.Topic
 import com.example.googlebasicswithcompose.ui.theme.GoogleBasicsWithComposeTheme
 import java.text.NumberFormat
 
@@ -82,7 +83,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AffirmationsApp()
+                    CoursesApp()
                 }
             }
         }
@@ -90,7 +91,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AffirmationsApp() {
+fun CoursesApp() {
     val layoutDirection = LocalLayoutDirection.current // It tells your code whether the user's phone is set to a Left-to-Right (LTR) language (like English) or a Right-to-Left (RTL) language (like Arabic or Hebrew)
 
     Surface(
@@ -105,58 +106,48 @@ fun AffirmationsApp() {
             ),
         color = MaterialTheme.colorScheme.background
     ) {
-        AffirmationList(affirmationList = Datasource().loadAffirmations())
+        TopicList(topicList = Datasource().loadTopics())
     }
 }
 
 @Composable
-fun AffirmationList(affirmationList: List<Affirmation>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) { // A Column is like a standard webpage: it loads everything
-        // at once. A LazyColumn is like an Instagram or Facebook feed: it only loads what you
-        // are currently looking at. Also, Column Does not scroll by default while LazyColumn Scrolling is built-in
-
-        // The items() method is how you add items to the LazyColumn. This method is unique to this composable.
-        items(affirmationList) { affirmation ->
-            // inside we specify what we should do with each item, just like a forEach loop
-            AffirmationCard(
-                affirmation,
-                modifier = Modifier.padding(8.dp)
-            )
-        }
-
-//        we used the items() method instead of forEach because we're inside LazyColumn.
-//        affirmationList.forEach { affirmation ->
-//            AffirmationCard(affirmation)
-//        }
+fun TopicList(topicList: List<Topic>, modifier: Modifier = Modifier) {
+    LazyColumn(modifier = modifier) {
     }
 }
 
 @Composable
-fun AffirmationCard(affirmation: Affirmation, modifier: Modifier = Modifier) {
+fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
     Card(modifier = modifier) {
-        Column() {
+        Row() {
             Image(
-                painter = painterResource(affirmation.imageResourceId),
-                contentDescription = stringResource(affirmation.stringResourceId),
+                painter = painterResource(topic.imageResourceId),
+                contentDescription = stringResource(topic.stringResourceId),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(194.dp),
                 contentScale = ContentScale.Crop // It scales the image up or down until the entire container (fillMaxWidth and height(194.dp)) is completely covered while maintaining the Aspect Ratio, and any part of the image that "hangs over" the edges is chopped off (cropped).
             )
-            Text(
-                text = stringResource(affirmation.stringResourceId),
-//                text = LocalContext.current.getString(affirmation.stringResourceId), // you can also get the stringResource like this.
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.headlineSmall
-            )
+            Column() {
+                Text(
+                    text = stringResource(topic.stringResourceId),
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                Text(
+                    text = stringResource(topic.stringResourceId),
+                    modifier = Modifier.padding(16.dp),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun AffirmationCardPreview() {
+fun TopicCardPreview() {
     GoogleBasicsWithComposeTheme {
-        AffirmationCard(Affirmation(R.string.affirmation1, R.drawable.image1))
+        TopicCard(Topic(R.string.photography, 10, R.drawable.photography))
     }
 }
