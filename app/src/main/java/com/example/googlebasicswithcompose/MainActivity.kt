@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -118,24 +119,32 @@ fun TopicList(topicList: List<Topic>, modifier: Modifier = Modifier) {
 
 @Composable
 fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {
-        Row() {
+    Card(
+        modifier = modifier
+        .size(width = 300.dp, height = 120.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+        ) {
             Image(
                 painter = painterResource(topic.imageResourceId),
                 contentDescription = stringResource(topic.stringResourceId),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(194.dp),
+                    .weight(0.4f)
+                    .fillMaxHeight(),
                 contentScale = ContentScale.Crop // It scales the image up or down until the entire container (fillMaxWidth and height(194.dp)) is completely covered while maintaining the Aspect Ratio, and any part of the image that "hangs over" the edges is chopped off (cropped).
             )
-            Column() {
+            Column(
+                modifier = Modifier
+                    .weight(0.6f)
+            ) {
                 Text(
                     text = stringResource(topic.stringResourceId),
                     modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.headlineSmall
                 )
                 Text(
-                    text = stringResource(topic.stringResourceId),
+                    text = topic.associatedCoursesNbr.toString(),
                     modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.headlineSmall
                 )
