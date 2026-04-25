@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -29,6 +30,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -81,7 +85,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             GoogleBasicsWithComposeTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding(), // Content now starts safely BELOW the clock/battery
                     color = MaterialTheme.colorScheme.background
                 ) {
                     CoursesApp()
@@ -98,7 +104,6 @@ fun CoursesApp() {
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding() // Content now starts safely BELOW the clock/battery
             .padding(
                 start = WindowInsets.safeDrawing.asPaddingValues()
                     .calculateStartPadding(layoutDirection), // Instead of just saying padding(left = 16.dp), this asks: "Based on the system bars AND whether the user's language is Left-to-Right or Right-to-Left, how much padding do I need at the start?"
@@ -107,13 +112,21 @@ fun CoursesApp() {
             ),
         color = MaterialTheme.colorScheme.background
     ) {
-        TopicList(topicList = Datasource().loadTopics())
+        TopicGrid(topicList = Datasource().loadTopics())
     }
 }
 
 @Composable
-fun TopicList(topicList: List<Topic>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
+fun TopicGrid(topicList: List<Topic>, modifier: Modifier = Modifier) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+    ) {
+        items(topicList) { topic ->
+            TopicCard(topic)
+        }
     }
 }
 
@@ -121,32 +134,31 @@ fun TopicList(topicList: List<Topic>, modifier: Modifier = Modifier) {
 fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
-        .size(width = 300.dp, height = 120.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxSize(),
-        ) {
+        Row {
             Image(
                 painter = painterResource(topic.imageResourceId),
                 contentDescription = stringResource(topic.stringResourceId),
                 modifier = Modifier
-                    .weight(0.4f)
-                    .fillMaxHeight(),
+                    .size(width = 68.dp, height = 68.dp)
+                    .aspectRatio(1f),
                 contentScale = ContentScale.Crop // It scales the image up or down until the entire container (fillMaxWidth and height(194.dp)) is completely covered while maintaining the Aspect Ratio, and any part of the image that "hangs over" the edges is chopped off (cropped).
             )
-            Column(
-                modifier = Modifier
-                    .weight(0.6f)
-            ) {
+            Column {
                 Text(
                     text = stringResource(topic.stringResourceId),
-                    modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.headlineSmall
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        top = 16.dp,
+                        end = 16.dp,
+                        bottom = 8.dp
+                    ),
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
                     text = topic.associatedCoursesNbr.toString(),
                     modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.labelMedium
                 )
             }
         }
