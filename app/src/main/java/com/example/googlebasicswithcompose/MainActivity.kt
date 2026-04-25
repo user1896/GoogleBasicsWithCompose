@@ -64,6 +64,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -93,9 +94,9 @@ class MainActivity : ComponentActivity() {
                     TopicGrid(
                         topicList = Datasource().loadTopics(),
                         modifier = Modifier.padding(
-                            start = 8.dp,
-                            top = 8.dp,
-                            end = 8.dp,
+                            start = dimensionResource(R.dimen.padding_small),
+                            top = dimensionResource(R.dimen.padding_small),
+                            end = dimensionResource(R.dimen.padding_small),
                         )
                     )
                 }
@@ -108,8 +109,8 @@ class MainActivity : ComponentActivity() {
 fun TopicGrid(topicList: List<Topic>, modifier: Modifier = Modifier) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
         modifier = modifier
     ) {
         items(topicList) { topic ->
@@ -137,10 +138,10 @@ fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
                     text = stringResource(topic.stringResourceId),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(
-                        start = 16.dp,
-                        top = 16.dp,
-                        end = 16.dp,
-                        bottom = 8.dp
+                        start = dimensionResource(R.dimen.padding_medium),
+                        top = dimensionResource(R.dimen.padding_medium),
+                        end = dimensionResource(R.dimen.padding_medium),
+                        bottom = dimensionResource(R.dimen.padding_small)
                     )
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -148,12 +149,12 @@ fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
                         painter = painterResource(R.drawable.ic_grain),
                         contentDescription = null,
                         modifier = Modifier
-                            .padding(start = 16.dp)
+                            .padding(start = dimensionResource(R.dimen.padding_medium))
                     )
                     Text(
                         text = topic.associatedCoursesNbr.toString(),
                         style = MaterialTheme.typography.labelMedium,
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier.padding(start = dimensionResource(R.dimen.padding_small))
                     )
                 }
             }
