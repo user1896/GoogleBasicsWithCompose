@@ -90,29 +90,17 @@ class MainActivity : ComponentActivity() {
                         .statusBarsPadding(), // Content now starts safely BELOW the clock/battery
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CoursesApp()
+                    TopicGrid(
+                        topicList = Datasource().loadTopics(),
+                        modifier = Modifier.padding(
+                            start = 8.dp,
+                            top = 8.dp,
+                            end = 8.dp,
+                        )
+                    )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun CoursesApp() {
-    val layoutDirection = LocalLayoutDirection.current // It tells your code whether the user's phone is set to a Left-to-Right (LTR) language (like English) or a Right-to-Left (RTL) language (like Arabic or Hebrew)
-
-    Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                start = WindowInsets.safeDrawing.asPaddingValues()
-                    .calculateStartPadding(layoutDirection), // Instead of just saying padding(left = 16.dp), this asks: "Based on the system bars AND whether the user's language is Left-to-Right or Right-to-Left, how much padding do I need at the start?"
-                end = WindowInsets.safeDrawing.asPaddingValues()
-                    .calculateEndPadding(layoutDirection)
-            ),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        TopicGrid(topicList = Datasource().loadTopics())
     }
 }
 
