@@ -147,19 +147,27 @@ fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
             Column {
                 Text(
                     text = stringResource(topic.stringResourceId),
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(
                         start = 16.dp,
                         top = 16.dp,
                         end = 16.dp,
                         bottom = 8.dp
-                    ),
-                    style = MaterialTheme.typography.bodyMedium
+                    )
                 )
-                Text(
-                    text = topic.associatedCoursesNbr.toString(),
-                    modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.labelMedium
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_grain),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                    )
+                    Text(
+                        text = topic.associatedCoursesNbr.toString(),
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
             }
         }
     }
