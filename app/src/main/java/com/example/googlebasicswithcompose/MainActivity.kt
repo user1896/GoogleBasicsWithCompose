@@ -91,81 +91,18 @@ class MainActivity : ComponentActivity() {
                         .statusBarsPadding(), // Content now starts safely BELOW the clock/battery
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TopicGrid(
-                        topicList = Datasource().loadTopics(),
-                        modifier = Modifier.padding(
-                            start = dimensionResource(R.dimen.padding_small),
-                            top = dimensionResource(R.dimen.padding_small),
-                            end = dimensionResource(R.dimen.padding_small),
-                        )
-                    )
+                    //
                 }
             }
         }
     }
 }
 
-@Composable
-fun TopicGrid(topicList: List<Topic>, modifier: Modifier = Modifier) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
-        modifier = modifier
-    ) {
-        items(topicList) { topic ->
-            TopicCard(topic)
-        }
-    }
-}
-
-@Composable
-fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier
-    ) {
-        Row {
-            Image(
-                painter = painterResource(topic.imageResourceId),
-                contentDescription = stringResource(topic.stringResourceId),
-                modifier = Modifier
-                    .size(width = 68.dp, height = 68.dp)
-                    .aspectRatio(1f),
-                contentScale = ContentScale.Crop // It scales the image up or down until the entire container (fillMaxWidth and height(194.dp)) is completely covered while maintaining the Aspect Ratio, and any part of the image that "hangs over" the edges is chopped off (cropped).
-            )
-            Column {
-                Text(
-                    text = stringResource(topic.stringResourceId),
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(
-                        start = dimensionResource(R.dimen.padding_medium),
-                        top = dimensionResource(R.dimen.padding_medium),
-                        end = dimensionResource(R.dimen.padding_medium),
-                        bottom = dimensionResource(R.dimen.padding_small)
-                    )
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_grain),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(start = dimensionResource(R.dimen.padding_medium))
-                    )
-                    Text(
-                        text = topic.associatedCoursesNbr.toString(),
-                        style = MaterialTheme.typography.labelMedium,
-                        modifier = Modifier.padding(start = dimensionResource(R.dimen.padding_small))
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun TopicCardPreview() {
     GoogleBasicsWithComposeTheme {
-        TopicCard(Topic(R.string.photography, 10, R.drawable.photography))
+        //
     }
 }
