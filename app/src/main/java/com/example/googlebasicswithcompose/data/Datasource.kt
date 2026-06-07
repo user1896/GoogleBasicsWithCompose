@@ -41,4 +41,9 @@ class Datasource() {
             Topic(R.string.tech, 118, R.drawable.tech)
         )
     }
+
+    fun loadDogs(): List<Dog> {
+        return listOf<Dog>(
+        )
+    }
 }
