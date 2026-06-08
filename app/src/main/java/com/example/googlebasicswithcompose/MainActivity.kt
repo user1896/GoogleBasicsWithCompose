@@ -275,8 +275,16 @@ fun DogHobby(
 
 @Preview(showBackground = true)
 @Composable
-fun WoofDarkThemePreview() {
+fun WoofPreview() {
     GoogleBasicsWithComposeTheme(darkTheme = false) {
+        WoofApp()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WoofDarkThemePreview() {
+    GoogleBasicsWithComposeTheme(darkTheme = true) {
         WoofApp()
     }
 }
