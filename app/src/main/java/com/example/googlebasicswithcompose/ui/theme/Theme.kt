@@ -10,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.example.woof.ui.theme.Shapes
 
 private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
@@ -94,6 +95,7 @@ fun GoogleBasicsWithComposeTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        shapes = Shapes, /* comment this if you want to use the internal default values provided out-of-the-box by the Material 3 library. */
         typography = Typography,
         content = content
     )
