@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -127,18 +128,64 @@ fun DogItem(
     dog: Dog,
     modifier: Modifier = Modifier
 ) {
+
     var expanded by remember { mutableStateOf(false) }
+
+//    From the name of this value ("animateColorAsState()") we conclude:
+//    "animate" => so it "animates", "Color" => so it animates a "Color",
+//    "AsState" => so this function returns a State object, and this is why it's called
+//    a state delegate.
+    val color by animateColorAsState(
+//        The "targetValue" acts as the trigger that tells the animation state what its new goal is.
+        targetValue = if (expanded) MaterialTheme.colorScheme.tertiaryContainer
+        else MaterialTheme.colorScheme.primaryContainer,
+    )
+//    When the targetValue changes a recomposition happens that updates the UI
+//    because color is a state, this is why animateColorAsState() must return a state.
+
     Card(
         modifier = modifier
     ) {
         Column(
             modifier = Modifier
+//                How does Jetpack Compose knows when to trigger the animation for animateContentSize below:
+//                The variable "expanded" is wrapped in mutableStateOf(false)
+//                Because "expanded" is a tracked state, Jetpack Compose instantly notices
+//                its value changed from false to true. Compose schedules a
+//                recomposition of the DogItem composable.
+//                During this re-run, the conditional check if (expanded) becomes true.
+//                The "DogHobby" composable is injected into the layout tree for the first time.
+//                Before the click, the Column only contained the Row. It was small.
+//                Now, the Column contains both the Row and the newly added "DogHobby" composable.
+//                The Compose layout system calculates the new, larger height required to fit everything.
+//                Normally, a layout immediately jumps to its new size on the screen.
+//                Because the Column has Modifier.animateContentSize(), Instead of
+//                jumping, animateContentSize() records the old size (before "DogHobby"
+//                appeared) and the target new size (with "DogHobby" included).
+//                So animations work by calculating the difference between the old and new sizes.
+//                Here, it steps the layout height frame-by-frame from the old size to the new size.
                 .animateContentSize(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioNoBouncy,
                         stiffness = Spring.StiffnessMedium
                     )
                 )
+                .background(color = color)
+//            Why ".animateContentSize()" is a modifier, but (animateColorAsState()) is a State Delegate?
+//            It's because they handle completely different types of UI data.
+//            These animations match how you apply those exact same properties in
+//            a normal, non-animated Compose layout, ex:
+//            * For Size:
+//              - Normal: You use a modifier (e.g., Modifier.size(100.dp))
+//              - Animated: (Modifier.animateContentSize())
+//            * For Color:
+//              - Normal: You pass a raw color(e.g., .background(color = Color.Blue) or Text(color = Color.Red)).
+//              - Animated: You pass a state delegate (e.g., val color by animateColorAsState()) color value into that exact same spot (.background(color = animatedColor))
+
+//            Jetpack Compose was designed so you don't have to rewrite your entire UI
+//            just to add an animation. The rule is simple: the animation type always
+//            matches the layout type. So you can inject animations into your existing
+//            layouts without breaking your code structure.
         ) {
             Row(
                 modifier = Modifier
@@ -282,10 +329,10 @@ fun WoofPreview() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun WoofDarkThemePreview() {
-    GoogleBasicsWithComposeTheme(darkTheme = true) {
-        WoofApp()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun WoofDarkThemePreview() {
+//    GoogleBasicsWithComposeTheme(darkTheme = true) {
+//        WoofApp()
+//    }
+//}
